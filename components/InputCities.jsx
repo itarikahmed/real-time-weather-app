@@ -1,26 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cities } from "@/utils/constants";
 import useFetch from "@/hooks/useFetch";
-
 import { CiLocationOn } from "react-icons/ci";
-const Cities = () => {
-  const [query, setQuery] = useState({ q: "London" });
+
+const InputCities = () => {
   const [city, setCity] = useState("");
   const [units, setUnits] = useState("metric");
+  const [query, setQuery] = useState({ q: "Paris" });
 
-  const data = useFetch({ ...query });
-  console.log(data);
-  const handleUnitsChange = (e) => {
-    const selectedUnit = e.currentTarget.name;
+  const data = useFetch(query);
+
+  const handleUnitsChange = (event) => {
+    const selectedUnit = event.target.name;
     if (units !== selectedUnit) setUnits(selectedUnit);
   };
-  console.log(city);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    setCity(event.target.value);
+    console.log("Submitted value:", city);
     if (city !== "") setQuery({ q: city });
+    setCity("");
+  };
+  console.log(query);
+  const handleChange = (event) => {
+    const city = event.target.value;
+    setCity(city);
   };
 
   const handleLocationClick = () => {
@@ -35,7 +41,7 @@ const Cities = () => {
       });
     }
   };
-
+  console.log(data);
   return (
     <div className="w-1/2 mx-auto">
       <div className="flex items-center justify-between my-6 text-black">
@@ -43,7 +49,9 @@ const Cities = () => {
           <button
             key={city.id}
             className="text-white text-lg font-medium"
-            onClick={() => setQuery({ q: city.title })}
+            onClick={() => {
+              setQuery({ q: city.title });
+            }}
           >
             {city.title}
           </button>
@@ -57,17 +65,19 @@ const Cities = () => {
           >
             <input
               type="text"
-              placeholder="Search for city...."
+              id="inputField"
+              placeholder="please enter acity name"
+              value={city}
+              onChange={handleChange}
               className="text-xl font-light p-2 rounded-md  shadow-xl focus:outline-none capitalize placeholder:lowercase w-72"
             />
             <button
               type="submit"
               className="text-white text-base font-medium cursor-pointer bg-sky-800 px-6 py-2.5 rounded-md"
             >
-              Search
+              Submit
             </button>
           </form>
-
           <CiLocationOn
             size={25}
             className="text-white cursor-pointer transition ease-out hover:scale-125"
@@ -97,4 +107,4 @@ const Cities = () => {
   );
 };
 
-export default Cities;
+export default InputCities;

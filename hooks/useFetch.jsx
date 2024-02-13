@@ -20,7 +20,7 @@ const useFetch = (searchParams) => {
   };
 
   const { data } = useQuery({
-    queryKey: ["weatherdata"],
+    queryKey: ["weatherdata", searchParams],
     queryFn: getWeatherData,
   });
   return data;

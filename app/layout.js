@@ -13,6 +13,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
+        suppressHydrationWarning={true}
         className={`${inter.className} bg-gradient-to-r from-cyan-500 to-blue-500`}
       >
         <Providers>{children}</Providers>
