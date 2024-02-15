@@ -11,14 +11,15 @@ export const cities = [
     id: 3,
     title: "Tokyo",
   },
-  {
-    id: 4,
-    title: "Toronto",
-  },
+  { id: 4, title: "Dhaka" },
+
   {
     id: 5,
     title: "Paris",
   },
   { id: 6, title: "New York" },
-  { id: 7, title: "Dhaka" },
+  {
+    id: 7,
+    title: "Toronto",
+  },
 ];

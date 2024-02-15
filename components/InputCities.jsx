@@ -1,16 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { cities } from "@/utils/constants";
 import useFetch from "@/hooks/useFetch";
 import { CiLocationOn } from "react-icons/ci";
+import TemperatureDetails from "./TemperatureDetails";
+import TimeAndLocation from "./TimeAndLocation";
+import Forecast from "./Forecast";
 
 const InputCities = () => {
   const [city, setCity] = useState("");
   const [units, setUnits] = useState("metric");
-  const [query, setQuery] = useState({ q: "Paris" });
+  const [query, setQuery] = useState({ q: "Dhaka" });
 
-  const data = useFetch(query);
+  const { data, isLoading, isError } = useFetch("weather", { units, ...query });
+  const {
+    coord: { lat, lon } = {},
+    main: { temp, feels_like, humidity, temp_min, temp_max } = {},
+    name,
+    sys: { country, sunrise, sunset } = {},
+    weather: [{ main, icon } = {}] = [],
+    wind: { speed } = {},
+    dt,
+    timezone,
+  } = data || {};
 
   const handleUnitsChange = (event) => {
     const selectedUnit = event.target.name;
@@ -19,11 +32,10 @@ const InputCities = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Submitted value:", city);
     if (city !== "") setQuery({ q: city });
     setCity("");
   };
-  console.log(query);
+
   const handleChange = (event) => {
     const city = event.target.value;
     setCity(city);
@@ -41,9 +53,10 @@ const InputCities = () => {
       });
     }
   };
-  console.log(data);
+
   return (
     <div className="w-1/2 mx-auto">
+      {/* Nav Links */}
       <div className="flex items-center justify-between my-6 text-black">
         {cities.map((city) => (
           <button
@@ -57,6 +70,7 @@ const InputCities = () => {
           </button>
         ))}
       </div>
+      {/* Search for a city */}
       <div className="flex flex-row justify-between items-center my-10 space-x-4">
         <div className="flex flex-row items-center justify-center space-x-6">
           <form
@@ -66,10 +80,10 @@ const InputCities = () => {
             <input
               type="text"
               id="inputField"
-              placeholder="please enter acity name"
+              placeholder="Please enter a city name"
               value={city}
               onChange={handleChange}
-              className="text-xl font-light p-2 rounded-md  shadow-xl focus:outline-none capitalize placeholder:lowercase w-72"
+              className="text-base font-light p-2 rounded-md shadow-xl focus:outline-none capitalize w-72"
             />
             <button
               type="submit"
@@ -78,13 +92,14 @@ const InputCities = () => {
               Submit
             </button>
           </form>
+          {/* Current Location */}
           <CiLocationOn
             size={25}
             className="text-white cursor-pointer transition ease-out hover:scale-125"
             onClick={handleLocationClick}
           />
         </div>
-
+        {/* Metric or Fahrenheit Button */}
         <div className="flex flex-row items-center justify-center">
           <button
             name="metric"
@@ -103,6 +118,16 @@ const InputCities = () => {
           </button>
         </div>
       </div>
+      <TimeAndLocation timezone={timezone} dt={dt} />
+      <TemperatureDetails
+        name={name}
+        country={country}
+        main={{ temp, feels_like, humidity, temp_min, temp_max }}
+        sys={{ sunrise, sunset }}
+        wind={speed}
+        weather={{ main, icon }}
+      />
+      <Forecast title="Daily Forecast" coord={{ lat, lon }} units={units} />
     </div>
   );
 };
