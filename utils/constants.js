@@ -23,3 +23,4 @@ export const cities = [
     title: "Toronto",
   },
 ];
+// NEXT_PUBLIC_DEV_API_URL="https://api.openweathermap.org/data/2.5"

@@ -62,7 +62,7 @@ const TemperatureDetails = ({
         <p className="font-light">
           Rise:{" "}
           <span className="font-medium ml-1">
-            {FormatToLocalTime(sys.sunrise, timezone, "hh:mm a")}
+            {FormatToLocalTime(Number(sys.sunrise), timezone, "hh:mm a")}
           </span>
         </p>
         <p className="font-light">|</p>
@@ -71,7 +71,7 @@ const TemperatureDetails = ({
         <p className="font-light">
           Set:{" "}
           <span className="font-medium ml-1">
-            {FormatToLocalTime(sys.sunset, timezone, "hh:mm a")}
+            {FormatToLocalTime(Number(sys.sunset), timezone, "hh:mm a")}
           </span>
         </p>
         <p className="font-light">|</p>
