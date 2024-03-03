@@ -14,6 +14,14 @@ const InputCities = () => {
   const [query, setQuery] = useState({ q: "Dhaka" });
 
   const { data, isLoading, isError } = useFetch("weather", { units, ...query });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError || !data) {
+    return <div>Error fetching data</div>;
+  }
   const {
     coord: { lat, lon } = {},
     main: { temp, feels_like, humidity, temp_min, temp_max } = {},
